@@ -68,7 +68,7 @@ router.get('/:id', wrapAsync(async (req, res) => {
 }));
 
 // Create New Listing
-router.post('/', isLoggedIn, validateListing, upload.single('listing[image]'),
+router.post('/', isLoggedIn, upload.single('listing[image]'),
     wrapAsync(async (req, res) => {
         const newListing = new Listing(req.body.listing);
         newListing.owner = req.user._id;
