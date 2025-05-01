@@ -1,0 +1,129 @@
+<% layout('layouts/boilerplate') -%>
+
+<body>
+  <div class="container my-5">
+    <div class="card shadow-sm p-4 rounded-4 border-0">
+      <h3 class="fw-semibold mb-4 text-center"><%= listing.title %></h3>
+
+      <img src="<%= listing.image.url %>" alt="<%= listing.title %>"
+           class="img-fluid rounded-3 mb-4 shadow-sm listing-image"
+           style="max-height: 400px; object-fit: cover; width: 100%;">
+
+      <ul class="list-unstyled fs-5">
+        <li class="mb-2"><strong>Owned by:</strong> <%= listing.owner.username %></li>
+        <li class="mb-2"><strong>Description:</strong> <%= listing.description %></li>
+        <li class="mb-2"><strong>Price:</strong> ₹ <%= listing.price.toLocaleString('en-IN') %></li>
+        <li class="mb-2"><strong>Location:</strong> <%= listing.location %></li>
+        <li class="mb-2"><strong>Country:</strong> <%= listing.country %></li>
+      </ul>
+
+      <% if (currentUser && currentUser._id.equals(listing.owner._id)) { %>
+        <div class="d-flex gap-3 mt-4">
+          <form method="POST" action="/listings/<%= listing._id %>?_method=DELETE">
+            <button type="submit" class="btn btn-outline-danger px-4">
+              🗑️ Delete
+            </button>
+          </form>
+          <a href="/listings/<%= listing._id %>/edit" class="btn btn-outline-primary px-4">
+            ✏️ Edit
+          </a>
+        </div>
+      <% } %>
+
+      <hr>
+        <% if(currentUser){ %>
+      <!-- Review Form + Reviews -->
+      <div class="col-md-8 mx-auto mt-5">
+        <div class="card shadow-sm border-0">
+          <div class="card-body">
+            <h4 class="card-title mb-4 text-primary">Write a Review</h4>
+            <form action="/listings/<%= listing._id %>/reviews" method="POST" class="needs-validation" novalidate>
+              <div class="mb-3">
+                <label for="rating" class="form-label">Rate Us!</label>
+                <!-- <input type="range" class="form-range" id="rating" name="review[rating]" min="1" max="5" step="1"
+                       oninput="document.getElementById('ratingValue').textContent = this.value;"> -->
+                       <fieldset class="starability-slot">
+                         <!-- <legend>First rating:</legend> -->
+                         <input type="radio" id="no-rate" class="input-no-rate" name="review[rating]" value="1" checked aria-label="No rating." />
+                         <input type="radio" id="first-rate1" name="review[rating]" value="1" />
+                         <label for="first-rate1" title="Terrible">1 star</label>
+                         <input type="radio" id="first-rate2" name="review[rating]" value="2" />
+                         <label for="first-rate2" title="Not good">2 stars</label>
+                         <input type="radio" id="first-rate3" name="review[rating]" value="3" />
+                         <label for="first-rate3" title="Average">3 stars</label>
+                         <input type="radio" id="first-rate4" name="review[rating]" value="4" />
+                         <label for="first-rate4" title="Very good">4 stars</label>
+                         <input type="radio" id="first-rate5" name="review[rating]" value="5" />
+                         <label for="first-rate5" title="Amazing">5 stars</label>
+                        </fieldset>
+                        <!-- <div class="text-muted small">Selected Rating: <span id="ratingValue">3</span> out of 5</div> -->
+                      </div>
+              
+
+              <div class="mb-3">
+                <label for="comment" class="form-label">Comments</label>
+                <textarea class="form-control" id="comment" name="review[comment]" rows="4" required placeholder="Share your experience..."></textarea>
+                <div class="invalid-feedback">Please write something.</div>
+              </div>
+
+              <button type="submit" class="btn btn-primary w-100">Submit Review</button>
+            </form>
+          </div>
+<% } %>
+          <!-- Review List -->
+          <div class="card-body border-top">
+            <h4 class="mb-4 text-secondary">All Reviews</h4>
+            <% if (listing.reviews.length === 0) { %>
+              <p class="text-muted">No reviews yet. Be the first to leave one!</p>
+            <% } else { %>
+              <div class="row row-cols-1 row-cols-lg-2 g-3 mt-4">
+                <% listing.reviews.forEach(review => { %>
+                  <div class="col">
+                    <div class="card shadow-sm h-100">
+                      <div class="card-body">
+                        
+                        <h6 class="card-title">@<%= review.author.username %></h6>
+                        <h4 class="card-subtitle mb-2 text-warning">
+                          <% for (let i = 0; i < review.rating; i++) { %>★<% } %>
+                          <% for (let i = review.rating; i < 5; i++) { %>☆<% } %>
+                          <small class="text-muted ms-2">(<%= review.rating %>/5)</small>
+                          
+                        </h4>
+                        <!-- <p class="starability-result" data-rating="<%= review.rating %>"></p> -->
+                     
+                        <p class="card-text"><%= review.comment %></p>
+                        <% if (currentUser && currentUser.username===review.author.username) { %>
+                        <form method="POST" action="/listings/<%= listing._id %>/reviews/<%= review._id %>?_method=DELETE" class="mt-3">
+                          <button type="submit" class="btn btn-sm btn-outline-danger">
+                            🗑️ Delete
+                          </button>
+                        </form>
+                        <% } %>
+                      </div>
+                    </div>
+                  </div>
+                <% }); %>
+              </div>
+            <% } %>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    (() => {
+      'use strict';
+      const forms = document.querySelectorAll('.needs-validation');
+      Array.from(forms).forEach(form => {
+        form.addEventListener('submit', event => {
+          if (!form.checkValidity()) {
+            event.preventDefault();
+            event.stopPropagation();
+          }
+          form.classList.add('was-validated');
+        }, false);
+      });
+    })();
+  </script>
+</body>

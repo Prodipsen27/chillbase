@@ -1,0 +1,99 @@
+<% layout('layouts/boilerplate') -%>
+
+<body>
+    <div class="container mt-4">
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <!-- <h3 class="fw-semibold text-black">All Listings</h3>
+              -->
+              <style>
+                .chillbase-filter-bar {
+                  overflow-x: auto;
+                  white-space: nowrap;
+                  padding-bottom: 0.5rem;
+                }
+              
+                .chillbase-btn {
+                  border: 1px solid #ddd;
+                  color: #555;
+                  background-color: #fff;
+                  border-radius: 50px;
+                  padding: 0.4rem 1rem;
+                  margin-right: 0.6rem;
+                  transition: all 0.2s ease-in-out;
+                  display: inline-flex;
+                  align-items: center;
+                  gap: 0.5rem;
+                  font-size: 0.95rem;
+                  text-decoration: none;
+                }
+              
+                .chillbase-btn:hover,
+                .chillbase-btn.active {
+                  background-color: #f7f7f7;
+                  border-color: #000;
+                  color: #000;
+                }
+              
+                .chillbase-icon {
+                  font-size: 1.2rem;
+                }
+              </style>
+              
+              <div class="filter chillbase-filter-bar d-flex align-items-center">
+                <a  href="/listings?filter=all" onclick="showDevAlert()" class="chillbase-btn <%= (filter === 'all' || !filter) ? 'active' : '' %>">
+                  <span class="chillbase-icon">🏠</span> All
+                </a>
+                <a href="/listings?filter=trending" onclick="showDevAlert()" class="chillbase-btn <%= filter === 'trending' ? 'active' : '' %>">
+                  <span class="chillbase-icon">🔥</span> Trending
+                </a>
+                <a href="/listings?filter=iconic" onclick="showDevAlert()" class="chillbase-btn <%= filter === 'iconic' ? 'active' : '' %>">
+                  <span class="chillbase-icon">🗽</span> Iconic Cities
+                </a>
+                <a href="/listings?filter=farm" onclick="showDevAlert()" class="chillbase-btn <%= filter === 'farm' ? 'active' : '' %>">
+                  <span class="chillbase-icon">🌾</span> Farm Stays
+                </a>
+                <a href="/listings?filter=beach" onclick="showDevAlert()" class="chillbase-btn <%= filter === 'beach' ? 'active' : '' %>">
+                  <span class="chillbase-icon">🏖️</span> Beach
+                </a>
+                <a href="/listings?filter=mountain" onclick="showDevAlert()" class="chillbase-btn <%= filter === 'mountain' ? 'active' : '' %>">
+                  <span class="chillbase-icon">🏔️</span> Mountain
+                </a>
+              </div>
+              
+              
+              
+        </div>
+
+        <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-3 g-4">
+            <% for (let listing of allListings) { %>
+                <div class="col">
+                    <div class="card h-100 shadow-sm position-relative custom-card">
+                        
+                        <% if (currentUser && currentUser._id.equals(listing.owner)) { %>
+                            <div class="position-absolute top-0 end-0 p-2 d-flex gap-2 z-1">
+                                <a href="/listings/<%= listing._id %>/edit" class="btn btn-sm btn-outline-primary">✏️</a>
+                                <form method="POST" action="/listings/<%= listing._id %>?_method=DELETE">
+                                    <button type="submit" class="btn btn-sm btn-outline-danger">🗑️</button>
+                                </form>
+                            </div>
+                        <% } %>
+
+                        <a href="/listings/<%= listing._id %>" class="text-decoration-none text-dark">
+                            <img src="<%= listing.image.url %>" class="card-img-top" alt="<%= listing.title %>">
+                            <div class="card-img-overlay text-white bg-dark bg-opacity-50">
+                                <h5 class="card-title"><%= listing.title %></h5>
+                                <p class="card-text"><small>Description: <%= listing.description %></small></p>
+                                <p class="card-text"><small>Location: <%= listing.location %></small></p>
+                            </div>
+                        </a>
+
+                        <div class="card-body d-flex flex-column justify-content-between">
+                            <p class="card-text mb-1 fw-medium"><%= listing.title %></p>
+                            <p class="card-text text-muted fw-semibold">₹ <%= listing.price.toLocaleString('en-IN') %>/night</p>
+                        </div>
+                    </div>
+                </div>
+            <% } %>
+        </div>
+    </div>
+</body>
