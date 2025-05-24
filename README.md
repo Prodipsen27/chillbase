@@ -2,7 +2,6 @@
 
 A dynamic and full-featured property listing web app where users can register, list properties, upload images, and leave reviews. Built using the **MERN stack** with **authentication, image uploads, form validation**, and more.
 
-![Chillbase Screenshot](https://github.com/Prodipsen27/chillbase/blob/main/chillbase.png) <!-- Optional: Add a screenshot -->
 <p align="center">
   <img src="https://github.com/Prodipsen27/chillbase/blob/main/chillbase.png" width="700"/>
 </p>
