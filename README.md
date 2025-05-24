@@ -3,6 +3,9 @@
 A dynamic and full-featured property listing web app where users can register, list properties, upload images, and leave reviews. Built using the **MERN stack** with **authentication, image uploads, form validation**, and more.
 
 ![Chillbase Screenshot](https://drive.google.com/file/d/1jn0ITxMkwe3elOmCWlnww1xKLMGGDmm8/view?usp=drive_link) <!-- Optional: Add a screenshot -->
+<p align="center">
+  <img src="./assets/chillbase-screenshot.png" width="700"/>
+</p>
 
 ---
 
@@ -53,13 +56,13 @@ SESSION_SECRET=your_session_secret
 npm start
 ```
 
-Visit: `http://localhost:3000`
+Visit: `http://localhost:8080`
 
 ---
 
 ### 🌐 Live Demo
 
-👉 [Live Demo on Render](https://chillbase.onrender.com/listings) *(replace if hosted)*
+👉 [Live Demo on Render](https://chillbase.onrender.com/listings)
 <!--👉 [Project Video Walkthrough](https://your-youtube-link.com) *(optional)*-->
 
 ---
