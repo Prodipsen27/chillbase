@@ -4,14 +4,10 @@
   },
   "name": "chillpad",
   "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
+  "main": "app.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "node app.js"
   },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
   "dependencies": {
     "bootstrap": "^5.3.5",
     "cloudinary": "^1.21.0",
