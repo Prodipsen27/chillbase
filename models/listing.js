@@ -13,13 +13,20 @@ const listingSchema = new Schema({
     type: String,
     required:true,
   } ,
-  image: {
-   url: String,
-   filename: String,
-  },
+  images: [
+    {
+      url: String,
+      filename: String,
+    }
+  ],
   price: Number,
   location: String,
   country: String,
+  category: {
+    type: String,
+    enum: ["Trending", "Rooms", "Iconic Cities", "Mountains", "Castles", "Amazing Pools", "Camping", "Farms", "Arctic", "Domes", "Boats", "Desert"],
+    required: true,
+  },
   reviews:[
     {
       type: Schema.Types.ObjectId,

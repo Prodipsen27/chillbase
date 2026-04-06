@@ -1,43 +1,36 @@
-const Listing = require('./models/listing.js');
-const Review = require('./models/review.js');
+const jwt = require("jsonwebtoken");
+const Listing = require("./models/listing");
+const Review = require("./models/review");
+
 module.exports.isLoggedIn = (req, res, next) => {
-    if(!req.isAuthenticated()){
-        req.session.redirectUrl = req.originalUrl;
-        req.flash('warning','you must be logged in');
-        return res.redirect('/login')
-     }
-     next();
+  const token = req.headers.authorization?.split(" ")[1];
+  if (!token) {
+    return res.status(401).json({ error: "Unauthorized: No token provided" });
+  }
+
+  try {
+    const decoded = jwt.verify(token, process.env.SECRET);
+    req.user = decoded;
+    next();
+  } catch (err) {
+    return res.status(401).json({ error: "Unauthorized: Invalid token" });
+  }
 };
 
-
-module.exports.saveRedirectUrl = (req, res, next) => {
-    if(req.session.redirectUrl){
-        res.locals.redirectUrl = req.session.redirectUrl;
-    }
-    next();
-}
-
 module.exports.isOwner = async (req, res, next) => {
-    let {id}=req.params;
-     // const listing = await Listing.findById(id);
-     let listing = await Listing.findById(id);
+  const { id } = req.params;
+  const listing = await Listing.findById(id);
+  if (!listing.owner.equals(req.user.id)) {
+    return res.status(403).json({ error: "You are not the owner of this listing" });
+  }
+  next();
+};
 
-     if (!listing.owner._id.equals(res.locals.currentUser._id)) {
-        req.flash('warning', 'You do not have the permission to proceed.');
-        return res.redirect(`/listings/${id}`);
-        
-     }
-    next();
-}
 module.exports.reviewAuth = async (req, res, next) => {
-    let {id,reviewId}=req.params;
-     // const listing = await Listing.findById(id);
-     let review = await Review.findById(reviewId);
-
-     if (!review.author.equals(res.locals.currentUser._id)) {
-        req.flash('warning', 'You do not have the permission to proceed.');
-        return res.redirect(`/listings/${id}`);
-        
-     }
-    next();
-}
+  const { reviewId } = req.params;
+  const review = await Review.findById(reviewId);
+  if (!review.author.equals(req.user.id)) {
+    return res.status(403).json({ error: "You are not the author of this review" });
+  }
+  next();
+};
