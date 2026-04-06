@@ -35,6 +35,10 @@ passport.use(new LocalStrategy(User.authenticate()));
 passport.serializeUser(User.serializeUser());
 passport.deserializeUser(User.deserializeUser());
 
+// Health Check Routes
+app.get('/api', (req, res) => res.json({ message: "ChillPad API is running!" }));
+app.get('/', (req, res) => res.json({ message: "ChillPad API is running!" }));
+
 // Routes
 app.use('/api/listings', listingRouter);
 app.use('/api/users', userRouter);
