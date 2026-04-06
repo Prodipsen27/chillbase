@@ -1,4 +1,4 @@
-## ✅ Chillbase – Full-Stack Property Listing Platform
+## ✅ Velvet Horizon – Full-Stack Property Listing Platform
 
 A dynamic and full-featured property listing web app where users can register, list properties, upload images, and leave reviews. Built using the **MERN stack** with **authentication, image uploads, form validation**, and more.
 
