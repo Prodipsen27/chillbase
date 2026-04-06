@@ -3,30 +3,29 @@ const Review = require("../models/review");
 const { cloudinary } = require("../cloudConfig");
 
 module.exports.index = async (req, res) => {
-  const { search, category, minPrice, maxPrice } = req.query;
-  let query = {};
-
-  if (search) {
-    query.$or = [
-      { title: { $regex: search, $options: "i" } },
-      { description: { $regex: search, $options: "i" } },
-      { location: { $regex: search, $options: "i" } },
-      { country: { $regex: search, $options: "i" } },
-    ];
+  try {
+    const { search, category, minPrice, maxPrice } = req.query;
+    let query = {};
+    if (search) {
+      query.$or = [
+        { title: { $regex: search, $options: "i" } },
+        { description: { $regex: search, $options: "i" } },
+        { location: { $regex: search, $options: "i" } },
+        { country: { $regex: search, $options: "i" } },
+      ];
+    }
+    if (category) query.category = category;
+    if (minPrice || maxPrice) {
+      query.price = {};
+      if (minPrice) query.price.$gte = Number(minPrice);
+      if (maxPrice) query.price.$lte = Number(maxPrice);
+    }
+    const allListings = await Listing.find(query).populate("owner");
+    res.json(allListings);
+  } catch (err) {
+    console.error("DEBUG ERROR:", err);
+    res.status(500).json({ error: "Database or Query Error", message: err.message });
   }
-
-  if (category) {
-    query.category = category;
-  }
-
-  if (minPrice || maxPrice) {
-    query.price = {};
-    if (minPrice) query.price.$gte = Number(minPrice);
-    if (maxPrice) query.price.$lte = Number(maxPrice);
-  }
-
-  const allListings = await Listing.find(query).populate("owner");
-  res.json(allListings);
 };
 
 module.exports.showListing = async (req, res) => {
