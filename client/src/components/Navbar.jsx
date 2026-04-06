@@ -29,7 +29,7 @@ const Navbar = () => {
           {/* Brand */}
           <div className="flex items-center gap-2">
             <Link to="/" className="text-2xl font-black tracking-tighter text-white font-headline uppercase hover:scale-105 transition-transform duration-300">
-              CHILLPAD
+              VELVET HORIZON
             </Link>
           </div>
           

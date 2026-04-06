@@ -36,8 +36,8 @@ passport.serializeUser(User.serializeUser());
 passport.deserializeUser(User.deserializeUser());
 
 // Health Check Routes
-app.get('/api', (req, res) => res.json({ message: "ChillPad API is running!" }));
-app.get('/', (req, res) => res.json({ message: "ChillPad API is running!" }));
+app.get('/api', (req, res) => res.json({ message: "Velvet Horizon API is running!" }));
+app.get('/', (req, res) => res.json({ message: "Velvet Horizon API is running!" }));
 
 // Routes
 app.use('/api/listings', listingRouter);

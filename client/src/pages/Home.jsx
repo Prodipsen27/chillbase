@@ -81,7 +81,7 @@ const Home = () => {
             animate={{ y: 0, opacity: 1 }}
             transition={{ duration: 0.8, delay: 0.2 }}
           >
-            Find your <span className="text-primary italic font-light drop-shadow-2xl">Chill</span> stay.
+            Discover your <span className="text-primary italic font-light drop-shadow-2xl">Velvet</span> stay.
           </motion.h1>
           {/* Search Bar */}
           <div className="w-full max-w-2xl mx-auto">
