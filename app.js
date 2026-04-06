@@ -50,7 +50,11 @@ app.use((err, req, res, next) => {
     res.status(statusCode).json({ error: message });
 })
 
+module.exports = app;
+
 const PORT = process.env.PORT || 8080;
-app.listen(PORT, () => {
-    console.log(`Server Started on port ${PORT}`);
-});
+if (process.env.NODE_ENV !== 'production') {
+    app.listen(PORT, () => {
+        console.log(`Server Started on port ${PORT}`);
+    });
+}
